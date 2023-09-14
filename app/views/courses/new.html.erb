@@ -1,0 +1,12 @@
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+        <h3> New Course </h3>
+    </div>
+    <div class="card-body">
+      <%= render 'form', course: @course %>
+      <hr>
+      <td><%= link_to "<< Back", courses_path, class: 'btn btn-primary btn-sm ' %></td>
+    </div>
+  </div>
+</div>

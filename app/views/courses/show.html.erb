@@ -1,0 +1,25 @@
+<p style="color: green"><%= notice %></p>
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <%= @course.name %>
+    </div>
+    <div class="card-body">
+        <div class="row">
+          <div class="col-md-2">
+              <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" alt="Profile Picture" class="img-thumbnail">
+          </div>
+          <div class="col-md-8">
+              <h4><%= @course.name %></h4>
+              <p>Description: <%= @course.description %></p>
+              <p>Years: <%= @course.years %></p>
+          </div>
+        </div>
+        </p>
+    </div>
+  </div>
+  <br>
+  <td><%= link_to "Edit", edit_course_path(@course), class: 'btn btn-success btn-sm' %></td>
+  <td><%= button_to "Destroy", @course, method: :delete, class: 'btn btn-danger btn-sm inline' %></td>
+  <td><%= link_to "<< Back", courses_path, class: 'btn btn-primary btn-sm' %></td>
+</div>

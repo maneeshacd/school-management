@@ -1,0 +1,35 @@
+<%= form_with(scope: :batch, url: url, method: _method) do |form| %>
+  <% if batch.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(batch.errors.count, "error") %> prohibited this batch from being saved:</h2>
+
+      <ul>
+        <% batch.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+    <div class="mb-3">
+        <%= form.label :name, class: 'form-label' %>
+        <%= form.text_field :name, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+        <%= form.label :start_date, class: 'form-label' %>
+        <%= form.date_field :start_date, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+        <%= form.label :end_date, class: 'form-label' %>
+        <%= form.date_field :end_date, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+        <%= form.label :description, class: 'form-label' %>
+        <%= form.text_area :description, class: "form-control" %>
+    </div>
+
+    <%= form.submit nil, class: 'btn btn-primary btn-md float-end' %>
+    <br>
+<%end%>

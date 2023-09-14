@@ -1,4 +1,5 @@
 ActiveAdmin.register User do
+  belongs_to :school
   permit_params :description, :name, :email, :school_id, :password, :password_confirmation
 
   index do
@@ -38,7 +39,7 @@ ActiveAdmin.register User do
   config.remove_action_item :new
 
   action_item :new, only: :index do
-    link_to 'Create School Admin', new_admin_user_path
-end
+    link_to 'Create School Admin', new_admin_school_user_path
+  end
 
 end

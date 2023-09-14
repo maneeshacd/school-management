@@ -1,0 +1,24 @@
+<%= link_to "New Course", new_course_path, class: 'btn btn-secondary btn-sm float-end' %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class='w-15' scope="col">name</th>
+      <th class='w-50' scope="col">Description</th>
+      <th scope="col">Years</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @courses.each do |course| %>
+      <tr>
+        <td><%= course.name%></td>
+        <td class=><%= course.description%></td>
+        <td class=><%= course.years%></td>
+        <td>
+          <%= link_to "Show", course_path(course), class: 'btn btn-success btn-sm' %>
+          <%= link_to "Batches", course_batches_path(course), class: 'btn btn-warning btn-sm' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  # before_action :configure_sign_up_params, only: [:create]
+  before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
@@ -12,7 +12,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     build_resource(sign_up_params.merge(role: :student))
-
     resource.save
     yield resource if block_given?
     if resource.persisted?
@@ -56,13 +55,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
     devise_parameter_sanitizer.permit(
       :sign_up,
-      keys: [:name, :email, :description, :password, :password_confirmation])
+      keys: [:name, :email, :description, :password, :password_confirmation, :school_id])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
