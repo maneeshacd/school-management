@@ -1,0 +1,25 @@
+<p style="color: green"><%= alert %></p>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class='w-15' scope="col">Batch</th>
+      <th class='w-15' scope="col">Course</th>
+      <th scope="col">Period</th>
+      <th scope="col">Status</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @enrollments.each do |en| %>
+      <tr>
+        <td><%= en.batch.name%></td>
+        <td><%= link_to en.batch.course.name, course_path(en.batch.course) %></td>
+        <td class=><%= en.batch.start_date.strftime("#{en.batch.start_date.day.ordinalize} %b %Y")%> - <%= en.batch.end_date.strftime("#{en.batch.end_date.day.ordinalize} %b %Y")%></td>
+        <td class=><%= en.status%></td>
+        <td class='w-25'>
+          <%= link_to "Show", batch_enrollment_path(en.batch, en), class: 'btn btn-success btn-sm' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

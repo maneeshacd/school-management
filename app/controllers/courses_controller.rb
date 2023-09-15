@@ -2,18 +2,23 @@ class CoursesController < ApplicationController
   before_action :set_course, only: %i[ show edit update destroy ]
 
   def index
+    authorize Course
     @courses = current_user.school.courses
   end
 
   def show; end
 
   def new
+    authorize Course
     @course = Course.new
   end
 
-  def edit; end
+  def edit
+    authorize @course
+  end
 
   def create
+    authorize Course
     @course = Course.new(course_params.merge(school: current_user.school))
 
     respond_to do |format|
@@ -28,6 +33,7 @@ class CoursesController < ApplicationController
   end
 
   def update
+    authorize @course
     respond_to do |format|
       if @course.update(course_params)
         format.html { redirect_to course_url(@course), notice: "Course was successfully updated." }
@@ -40,6 +46,7 @@ class CoursesController < ApplicationController
   end
 
   def destroy
+    authorize @course
     @course.destroy
 
     respond_to do |format|

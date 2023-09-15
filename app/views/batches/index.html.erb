@@ -1,4 +1,8 @@
-<%= link_to "New Batch", new_course_batch_path(@course), class: 'btn btn-secondary btn-sm float-end' %>
+<% if policy(Batch).new? %>
+  <%= link_to "New Batch", new_course_batch_path(@course), class: 'btn btn-secondary btn-sm float-end' %>
+<%end%>
+<h3>Batch list of : <%= @course.name%></h3>
+<br>
 <table class="table table-striped">
   <thead>
     <tr>

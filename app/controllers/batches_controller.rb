@@ -6,15 +6,21 @@ class BatchesController < ApplicationController
     @batches = @course.batches
   end
 
-  def show; end
+  def show
+    @already_enrolled = current_user.student_batches.include?(@batch)
+  end
 
   def new
+    authorize Batch
     @batch = @course.batches.build
   end
 
-  def edit; end
+  def edit
+    authorize @batch
+  end
 
   def create
+    authorize Batch
     @batch = @course.batches.build(batch_params)
 
     respond_to do |format|
@@ -29,6 +35,7 @@ class BatchesController < ApplicationController
   end
 
   def update
+    authorize @batch
     respond_to do |format|
       if @batch.update(batch_params)
         format.html { redirect_to course_batch_url(@course, @batch), notice: "Batch was successfully updated." }
@@ -41,6 +48,7 @@ class BatchesController < ApplicationController
   end
 
   def destroy
+    authorize @batch
     @batch.destroy
 
     respond_to do |format|

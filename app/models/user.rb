@@ -3,11 +3,15 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  belongs_to :school
-  has_one :student_enrollment, class_name: 'Enrollment', foreign_key: :student_id
-  has_one :student_batch, through: :student_enrollment, source: :batch
+  belongs_to :school, optional: true
+  has_many :student_enrollments, class_name: 'Enrollment', foreign_key: :student_id
+  has_many :student_batches, through: :student_enrollments, source: :batch
+  has_many :enrolled_courses, through: :student_batches, source: :course
+  has_many :classmates, -> (user) {
+    where(enrollments: { status: 1 }).where.not(id: user).distinct
+  }, through: :student_batches, source: :students
 
-  enum :role, %w[school_admin student]
+  enum :role, %w[school_admin student admin]
 
   def self.ransackable_attributes(auth_object = nil)
     [

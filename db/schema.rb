@@ -66,7 +66,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_072629) do
     t.string "email", default: "", null: false
     t.string "name", default: "", null: false
     t.text "description", default: "", null: false
-    t.integer "school_id", null: false
+    t.integer "school_id"
     t.integer "role", default: 0, null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"

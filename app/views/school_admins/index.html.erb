@@ -1,0 +1,22 @@
+  <%= link_to "New School Admin", new_school_school_admin_path(@school), class: 'btn btn-secondary btn-sm float-end' %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class='w-15' scope="col">name</th>
+      <th class='w-50' scope="col">Description</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_admins.each do |admin| %>
+      <tr>
+        <td><%= admin.name%></td>
+        <td class=><%= admin.description%></td>
+        <td>
+          <%= link_to "Show", school_school_admin_path(@school, admin), class: 'btn btn-success btn-sm' %>
+          <%= button_to "Impersonate", impersonate_path(admin), method: :post, class: 'btn btn-secondary btn-sm' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

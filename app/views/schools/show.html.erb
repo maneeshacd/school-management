@@ -5,8 +5,13 @@
   <div class="card-body">
     <!-- <h5 class="card-title">Special title treatment</h5> -->
     <p class="card-text"><%= @school.description %></p>
-    <p>Enrollment details: <%= current_user.student_enrollment.batch.course.name %>, <%= current_user.student_enrollment.batch.name%></p>
-    <a href=<%= edit_school_path(@school)%> class="btn btn-success">Edit</a>
+    <% if policy(@school).edit? %>
+      <a href=<%= edit_school_path(@school)%> class="btn btn-success btn-sm">Edit</a>
+    <% end %>
+    <% if policy(@school).destroy? %>
+      <td><%= button_to "Destroy", @school, method: :delete, class: 'btn btn-danger btn-sm inline' %></td>
+    <% end %>
+    <a href=<%= schools_path%> class="btn btn-info btn-sm"><< Back</a>
   </div>
 </div>
 

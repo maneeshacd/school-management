@@ -1,0 +1,16 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class='w-15' scope="col">Student</th>
+      <th class='w-50' scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @classmates.each do |classmate| %>
+      <tr>
+        <td><%= classmate.name%></td>
+        <td class=><%= classmate.description%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

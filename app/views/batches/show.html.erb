@@ -3,15 +3,23 @@
   <div class="card">
     <div class="card-header">
       <%= @batch.name %>
-      <td><%= button_to "Enroll", batch_enrollments_path(@batch), method: :post, class: 'btn btn-success btn-sm float-end' %></td>
+      <% if policy(Enrollment).new? %>
+        <td>
+          <%= @already_enrolled ?
+            button_to("Enrolled", '/#', class: 'btn btn-sm float-end')
+            :
+            button_to("Enroll", batch_enrollments_path(@batch), method: :post, class: 'btn btn-success btn-sm float-end' )%>
+        </td>
+      <%end%>
+      <% if policy(Enrollment).index? %>
+        <td><%= link_to "Enrollments", batch_enrollments_path(@batch), class: 'btn btn-success btn-sm float-end' %></td>
+      <%end%>
     </div>
     <div class="card-body">
         <div class="row">
-          <div class="col-md-2">
-              <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" alt="Profile Picture" class="img-thumbnail">
-          </div>
           <div class="col-md-8">
-              <h4><%= @batch.name %></h4>
+              <h4>Batch name: <%= @batch.name %></h4>
+              <p>Course name: <%= @course.name %></p>
               <p>Strat Date: <%= @batch.start_date.strftime('%d %b %Y') %></p>
               <p>End Date: <%= @batch.end_date.strftime('%d %b %Y') %></p>
               <p>Description: <%= @batch.description.presence || 'None' %></p>
@@ -21,7 +29,11 @@
     </div>
   </div>
   <br>
-  <td><%= link_to "Edit", edit_course_batch_path(@course, @batch), class: 'btn btn-success btn-sm' %></td>
-  <td><%= button_to "Destroy", course_batch_path(@course, @batch), method: :delete, class: 'btn btn-danger btn-sm inline' %></td>
+  <% if policy(@batch).edit? %>
+    <td><%= link_to "Edit", edit_course_batch_path(@course, @batch), class: 'btn btn-success btn-sm' %></td>
+  <%end%>
+  <% if policy(@batch).destroy? %>
+    <td><%= button_to "Destroy", course_batch_path(@course, @batch), method: :delete, class: 'btn btn-danger btn-sm inline' %></td>
+  <%end%>
   <td><%= link_to "<< Back", course_batches_path(@course), class: 'btn btn-primary btn-sm' %></td>
 </div>

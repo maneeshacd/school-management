@@ -1,0 +1,34 @@
+<p style="color: green"><%= alert %></p>
+<h3><%= @batch.name %></h3>
+<br>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class='w-15' scope="col">Batch</th>
+      <th class='w-15' scope="col">Student</th>
+      <th scope="col">Period</th>
+      <th scope="col">Status</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @enrollments.each do |en| %>
+      <tr>
+        <td><%= @batch.name%></td>
+        <td><%= en.student.name%></td>
+        <td class=><%= @batch.start_date.strftime("#{@batch.start_date.day.ordinalize} %b %Y")%> - <%= @batch.end_date.strftime("#{@batch.end_date.day.ordinalize} %b %Y")%></td>
+        <td class=><%= en.status%></td>
+        <td class='w-25'>
+          <%= link_to "Show", batch_enrollment_path(@batch, en), class: 'btn btn-success btn-sm' %>
+          <%if en.rejected? || en.pending?%>
+            <%= button_to "Approve", batch_enrollment_path(@batch, en, status: :approved), method: :patch, class: 'btn btn-success btn-sm' %>
+          <%end%>
+          <% if en.approved? || en.pending? %>
+            <%= button_to "Reject", batch_enrollment_path(@batch, en, status: :rejected), method: :patch, class: 'btn btn-danger btn-sm' %>
+          <%end%>
+        </td>
+      </tr>
+    <% end %>
+
+  </tbody>
+</table>

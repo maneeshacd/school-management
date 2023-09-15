@@ -1,4 +1,8 @@
-<%= link_to "New Course", new_course_path, class: 'btn btn-secondary btn-sm float-end' %>
+<% if policy(Course).new? %>
+  <%= link_to "New Course", new_course_path, class: 'btn btn-secondary btn-sm float-end' %>
+<% end %>
+<h3>Course List</h3>
+<br>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -17,6 +21,9 @@
         <td>
           <%= link_to "Show", course_path(course), class: 'btn btn-success btn-sm' %>
           <%= link_to "Batches", course_batches_path(course), class: 'btn btn-warning btn-sm' %>
+          <%  if current_user.enrolled_courses.include?(course) %>
+            <%= link_to "Enrolled", '#', class: 'btn', style: "color: green" %>
+          <%end%>
         </td>
       </tr>
     <% end %>

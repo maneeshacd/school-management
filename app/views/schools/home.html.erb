@@ -1,0 +1,13 @@
+<div class="card">
+  <div class="card-header">
+    <%= @school.name %>
+  </div>
+  <div class="card-body">
+    <!-- <h5 class="card-title">Special title treatment</h5> -->
+    <p class="card-text"><%= @school.description %></p>
+    <% if policy(@school).home_edit? %>
+      <a href=<%= home_edit_path%> class="btn btn-success">Edit</a>
+    <% end %>
+  </div>
+</div>
+

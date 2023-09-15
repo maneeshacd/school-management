@@ -1,0 +1,18 @@
+<div class="card">
+  <div class="card-header">
+    <%= @user.name %>
+  </div>
+  <div class="card-body">
+    <div class='row'>
+      <div class="col-md-2">
+          <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" alt="Profile Picture" class="img-thumbnail">
+      </div>
+      <div class='col-md-8'>
+        <p class="card-text">Description: <%= @user.description.presence || 'None' %></p>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<a href=<%= edit_profile_path%> class="btn btn-success">Edit</a>
+

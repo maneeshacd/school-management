@@ -1,0 +1,47 @@
+<p style="color: green"><%= notice %></p>
+
+<div style="color: red">
+  <ul>
+    <% @enrollment.errors.each do |error| %>
+      <li><%= error.full_message %></li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <h3>Enrollment - <%= @batch.name %></h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+              <p><strong>Student:</strong> <%= @enrollment.student.name %></p>
+              <p><strong>Student details:</strong> <%= @enrollment.student.description %></p>
+              <p><strong>Batch:</strong> <%= @batch.name %></p>
+              <p><strong>Batch details:</strong> <%= @batch.description %></p>
+              <p><strong>Strat Date:</strong> <%= @batch.start_date.strftime('%d %b %Y') %></p>
+              <p><strong>End Date:</strong> <%= @batch.end_date.strftime('%d %b %Y') %></p>
+              <p><strong>status:</strong> <%= @enrollment.status.humanize %></p>
+          </div>
+        </div>
+        </p>
+    </div>
+  </div>
+  <br>
+  <td class='w-25'>
+    <%= link_to "Go to batch", course_batch_path(@batch, @batch.course), class: 'btn btn-success btn-sm' %>
+    <% if policy(@enrollment).update? %>
+      <%if @enrollment.rejected? || @enrollment.pending?%>
+        <%= button_to "Approve", batch_enrollment_path(@batch, @enrollment), method: :patch, class: 'btn btn-success btn-sm' %>
+      <%end%>
+      <% if @enrollment.approved? || @enrollment.pending? %>
+        <%= button_to "Reject", batch_enrollment_path(@batch, @enrollment), method: :patch, class: 'btn btn-danger btn-sm' %>
+      <%end%>
+    <%end%>
+  </td>
+  <td><%= link_to "Classmates", classmates_path, class: 'btn btn-info btn-sm inline' %></td>
+  <% if policy(@enrollment).destroy? %>
+    <td><%= button_to "Delete", batch_enrollment_path(@batch, @enrollment), method: :delete, class: 'btn btn-danger btn-sm inline' %></td>
+  <%end%>
+</div>

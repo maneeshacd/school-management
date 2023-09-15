@@ -3,6 +3,7 @@
   <div class="card">
     <div class="card-header">
       <%= @course.name %>
+      <%= link_to "Batches", course_batches_path(@course), class: 'btn btn-warning btn-sm float-end' %>
     </div>
     <div class="card-body">
         <div class="row">
@@ -19,7 +20,11 @@
     </div>
   </div>
   <br>
-  <td><%= link_to "Edit", edit_course_path(@course), class: 'btn btn-success btn-sm' %></td>
-  <td><%= button_to "Destroy", @course, method: :delete, class: 'btn btn-danger btn-sm inline' %></td>
+  <% if policy(@course).edit? %>
+    <td><%= link_to "Edit", edit_course_path(@course), class: 'btn btn-success btn-sm' %></td>
+  <% end %>
+  <% if policy(@course).destroy? %>
+    <td><%= button_to "Destroy", @course, method: :delete, class: 'btn btn-danger btn-sm inline' %></td>
+  <% end %>
   <td><%= link_to "<< Back", courses_path, class: 'btn btn-primary btn-sm' %></td>
 </div>
