@@ -3,6 +3,11 @@
 class DeviseCreateUsers < ActiveRecord::Migration[7.0]
   def change
     create_table :users do |t|
+      t.string :provider, :null => false, :default => "email"
+      t.string :uid, :null => false, :default => ""
+      t.boolean  :allow_password_change, :default => false
+
+
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :name,               null: false, default: ""
@@ -17,6 +22,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
 
       ## Rememberable
       t.datetime :remember_created_at
+      t.json :tokens
 
       ## Trackable
       # t.integer  :sign_in_count, default: 0, null: false

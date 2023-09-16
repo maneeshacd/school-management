@@ -1,8 +1,11 @@
 class User < ApplicationRecord
+  extend Devise::Models
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+  include DeviseTokenAuth::Concerns::User
+
   belongs_to :school, optional: true
   has_many :student_enrollments, class_name: 'Enrollment', foreign_key: :student_id
   has_many :student_batches, through: :student_enrollments, source: :batch

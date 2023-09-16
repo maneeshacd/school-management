@@ -52,6 +52,9 @@ gem 'activeadmin'
 gem 'pg'
 gem 'pundit'
 gem "pretender"
+gem 'devise_token_auth'
+gem 'will_paginate', '~> 4.0'
+gem 'rdoc'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

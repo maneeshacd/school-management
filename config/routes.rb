@@ -3,6 +3,15 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { registrations: 'users/registrations' }
 
+  namespace :api do
+    scope :v1 do
+      mount_devise_token_auth_for 'User', at: 'auth', controllers: {
+        registrations:  'auth/registrations',
+        sessions:  'auth/sessions'
+      }
+    end
+  end
+
   root to: 'home#show'
   resources :schools do
     resources :school_admins
