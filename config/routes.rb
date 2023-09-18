@@ -1,16 +1,21 @@
 Rails.application.routes.draw do
-  devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
   devise_for :users, controllers: { registrations: 'users/registrations' }
 
   namespace :api do
-    scope :v1 do
-      mount_devise_token_auth_for 'User', at: 'auth', controllers: {
-        registrations:  'auth/registrations',
-        sessions:  'auth/sessions'
-      }
+    devise_for :users, defaults: { format: :json },
+                     class_name: 'ApiUser',
+                           skip: [:registrations, :invitations,
+                                  :passwords, :confirmations,
+                                  :unlocks],
+                           path: '',
+                     path_names: { sign_in: 'login',
+                                  sign_out: 'logout' }
+    devise_scope :user do
+      get 'login', to: 'devise/sessions#new'
+      delete 'logout', to: 'devise/sessions#destroy'
     end
   end
+
 
   root to: 'home#show'
   resources :schools do

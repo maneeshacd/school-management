@@ -2,10 +2,23 @@ class BatchesController < ApplicationController
   before_action :set_course
   before_action :set_batch, only: %i[ show edit update destroy ]
 
+  # @url [GET] /courses/:course_id/batches.json
+  #
+  # @param course_id [Integer] Course ID of the btach.
+  # @param [Hash] Optional query parameters.
+  # @option options [Integer] :page The page number.
+  # @option options [Integer] :per_page The number of items per page.
+  #
+  # @return [Array<Item>] An array of batches.
   def index
-    @batches = @course.batches
+    @batches = @course.batches.paginate(page: params[:page], per_page: params[:per_page])
   end
 
+  # @url [GET] /courses/:course_id/batches/:id.json
+  #
+  # @param id [Integer] id (required) The ID of the batch.
+  # @param course_id [Integer] Course ID of the btach.
+  # @return [Batch] The course resource.
   def show
     @already_enrolled = current_user.student_batches.include?(@batch)
   end
@@ -19,6 +32,14 @@ class BatchesController < ApplicationController
     authorize @batch
   end
 
+  # @url [POST] /courses/:course_id/batches.json
+  #
+  # @param course_id [Integer] Course ID of the btach.
+  # @param name [String] (Required) Name of the batch.
+  # @param description [Text] (Required) Description of the batch.
+  # @param start_date [Date] (Required) Start date of the batch.
+  # @param end_date [Date] (Required) End date of the batch.
+  # @return [Batch] The batch resource.
   def create
     authorize Batch
     @batch = @course.batches.build(batch_params)
@@ -34,6 +55,13 @@ class BatchesController < ApplicationController
     end
   end
 
+  # @url [PATCH] /courses/:course_id/batches/:id.json
+  #
+  # @param id [Integer] id (required) The ID of the batch.
+  # @param course_id [Integer] Course ID of the btach.
+  # @param name [Integer] Name of the batch.
+  # @param description [Text] Description of the batch.
+  # @return [Batch] The batch resource.
   def update
     authorize @batch
     respond_to do |format|
@@ -47,6 +75,11 @@ class BatchesController < ApplicationController
     end
   end
 
+  # @url [DELETE] /courses/:course_id/batches/:id.json
+  #
+  # @param id [Integer] id (required) The ID of the batch.
+  # @param course_id [Integer] Course ID of the btach.
+  # @return No content
   def destroy
     authorize @batch
     @batch.destroy

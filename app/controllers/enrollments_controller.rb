@@ -2,7 +2,13 @@ class EnrollmentsController < ApplicationController
   before_action :set_batch, except: :student_index
   before_action :set_enrollment, only: %i[ show edit update destroy ]
 
-  # GET /enrollments or /enrollments.json
+  # @url [GET] /batches/:batch_id/enrollments.json
+  #
+  # @option batch_id [Integer] batch id of enrollments.
+  # @option options [Integer] :page The page number.
+  # @option options [Integer] :per_page The number of items per page.
+  #
+  # @return [Array<Item>] An array of schools.
   def index
     authorize Enrollment
     @enrollments = @batch.enrollments.includes(:batch, :student)
@@ -13,10 +19,17 @@ class EnrollmentsController < ApplicationController
     @enrollments = current_user.student_enrollments
   end
 
-  # GET /enrollments/1 or /enrollments/1.json
+  # @url [GET] /batches/:batch_id/enrollments/:id.json
+  #
+  # @param id [Integer] id (required) The ID of the enrollment.
+  # @param batch_id [Integer] id (required) The batch_id of the enrollment batch.
+  # @return [Enrollment] The Enrollment resource.
   def show; end
 
-  # POST /enrollments or /enrollments.json
+  # @url [POST] /batches/:batch_id/enrollments.json
+  #
+  # @param batch_id [Integer] (Required) batch id of enrollment
+  # @return [Enrollment] The enrollment resource.
   def create
     authorize Enrollment
     already_enrolled_to_course? and return
@@ -36,7 +49,12 @@ class EnrollmentsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /enrollments/1 or /enrollments/1.json
+  # @url [PATCH] /batches/:batch_id/enrollments/:id.json
+  #
+  # @param batch_id [Integer] (Required) batch id of enrollment
+  # @param id [Integer] (Required) id of enrollment
+  # @param status [Integer] status of the enrollment (pending / approved / rejected)
+  # @return [Enrollment] The enrollment resource.
   def update
     authorize @enrollment
     @enrollment.status = params[:status]
@@ -51,7 +69,10 @@ class EnrollmentsController < ApplicationController
     end
   end
 
-  # DELETE /enrollments/1 or /enrollments/1.json
+  # @url [DELETE] /batches/:batch_id/enrollments/:id.json
+  #
+  # @param batch_id [Integer]  The batch ID of the enrollment.
+  # @return No content
   def destroy
     authorize @enrollment
     respond_to do |format|
@@ -69,10 +90,18 @@ class EnrollmentsController < ApplicationController
 
     def already_enrolled_to_course?
       if current_user.enrolled_courses.include?(@batch.course)
-        redirect_to(
-          course_batch_path(@batch.course, @batch),
-          alert: 'You already enrolled to another batch of this same course'
-        ) and return true
+        respond_to do |format|
+          format.html {
+            redirect_to(
+              course_batch_path(@batch.course, @batch),
+              alert: 'You already enrolled to another batch of this same course'
+            )
+          }
+          format.json {
+            render json: 'You already enrolled to another batch of this same course',
+            status: :unprocessable_entity
+          }
+        end and return true
       end
     end
 

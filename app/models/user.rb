@@ -1,10 +1,8 @@
 class User < ApplicationRecord
-  extend Devise::Models
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  include DeviseTokenAuth::Concerns::User
 
   belongs_to :school, optional: true
   has_many :student_enrollments, class_name: 'Enrollment', foreign_key: :student_id
@@ -15,6 +13,17 @@ class User < ApplicationRecord
   }, through: :student_batches, source: :students
 
   enum :role, %w[school_admin student admin]
+
+  validate :user_school, on: :create
+  before_create :add_jti
+
+  def add_jti
+    self.jti ||= SecureRandom.uuid
+  end
+
+  def user_school
+    errors.add(:kind, "School id cannot be blank") if student? && school_id.nil?
+  end
 
   def self.ransackable_attributes(auth_object = nil)
     [

@@ -48,11 +48,10 @@ gem "sassc-rails"
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 gem 'devise'
-gem 'activeadmin'
+gem 'devise-jwt'
 gem 'pg'
 gem 'pundit'
 gem "pretender"
-gem 'devise_token_auth'
 gem 'will_paginate', '~> 4.0'
 gem 'rdoc'
 
