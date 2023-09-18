@@ -1,39 +1,64 @@
-<h2>Sign up</h2>
+<section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="https://educarepk.com/wp-content/uploads/2020/04/School-Management-1.jpg"
+          class="img-fluid" alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <h3>STUDENT SIGNUP</h3>
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+          <%= render "devise/shared/error_messages", resource: resource %>
+          <div class="form-outline mb-4">
+            <%= f.text_field :name, class: 'form-control form-control-lg', placeholder: 'Enter name' %>
+          </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            <%= f.email_field :email, class: 'form-control form-control-lg', placeholder: 'Enter a valid email address' %>
+          </div>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name, autofocus: true %>
+          <!-- Phone input -->
+          <div class="form-outline mb-4">
+            <%= f.text_field :phone_number, class: 'form-control form-control-lg', placeholder: 'Enter phone number' %>
+          </div>
+
+          <div class="form-outline mb-4">
+            <%= f.label :school %><br />
+            <%= f.collection_select :school_id, School.order(:name), :id, :name  %>
+          </div>
+
+
+          <div class="form-outline mb-3">
+            <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> characters minimum)</em>
+            <% end %><br />
+            <%= f.password_field :password, class: 'form-control form-control-lg', placeholder: 'Enter password'  %>
+          </div>
+
+          <!-- Password input -->
+          <div class="form-outline mb-3">
+            <%= f.password_field :password_confirmation, class: 'form-control form-control-lg', placeholder: 'Confirm  password' %>
+          </div>
+
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <%= f.submit "Sign Up", class: 'btn btn-primary btn-lg' %>
+
+
+            <p class="small fw-bold mt-2 pt-1 mb-0">Already have an account?
+              <%= link_to "Log in", new_session_path(resource_name) %><br />
+            </p>
+          </div>
+
+        <% end %>
+      </div>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  <div
+    class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
+    <div class="text-white mb-3 mb-md-0">
+      Copyright © 2020. All rights reserved.
+    </div>
   </div>
+</section>
 
-  <div class="field">
-    <%= f.label :school %><br />
-    <%= f.collection_select :school_id, School.order(:name), :id, :name  %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>

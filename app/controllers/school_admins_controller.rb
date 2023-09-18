@@ -108,6 +108,6 @@ class SchoolAdminsController < ApplicationController
   end
 
   def school_admin_params
-    params.require(:school_admin).permit(:name, :email, :password, :password_confirmation, :description)
+    params.require(:school_admin).permit(:name, :email, :phone_number, :password, :password_confirmation, :description)
   end
 end

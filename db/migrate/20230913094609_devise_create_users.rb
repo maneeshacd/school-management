@@ -11,6 +11,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
       t.integer :school_id
       t.integer :role,              null: false, default: 0
       t.string :encrypted_password, null: false, default: ""
+      t.string :phone_number
 
       ## Recoverable
       t.string   :reset_password_token
@@ -18,7 +19,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
 
       ## Rememberable
       t.datetime :remember_created_at
-      t.json :tokens
 
       ## Trackable
       # t.integer  :sign_in_count, default: 0, null: false

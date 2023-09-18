@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     resources :enrollments
   end
 
-  get 'classmates', to: 'students#classmates'
+  get '/batches/:id/classmates', to: 'students#classmates', as: :batch_classmates
   get 'enrollments', to: 'enrollments#student_index'
   get 'profile', to: 'profile#show'
   get 'edit_profile', to: 'profile#edit'

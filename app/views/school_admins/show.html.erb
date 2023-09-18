@@ -6,9 +6,10 @@
     <!-- <h5 class="card-title">Special title treatment</h5> -->
     <p class="card-text">Name: <%= @school_admin.name %></p>
     <p class="card-text">Email: <%= @school_admin.email %></p>
-    <p class="card-text"><%= @school_admin.description %></p>
+    <p class="card-text">Phone Number: <%= @school_admin.phone_number.presence || 'None' %></p>
+    <p class="card-text">Description: <%= @school_admin.description.presence || 'None' %></p>
     <a href=<%= edit_school_school_admin_path(@school, @school_admin)%> class="btn btn-success btn-sm">Edit</a>
-    <td><%= button_to "Destroy", school_school_admin_path(@school, @school_admin), method: :delete, class: 'btn btn-danger btn-sm inline' %></td>
+    <td><%= button_to "Destroy", school_school_admin_path(@school, @school_admin), method: :delete, class: 'btn btn-danger btn-sm inline', form: { data: { turbo_confirm: "Are you sure?" } } %></td>
     <a href=<%= school_school_admins_path(@school)%> class="btn btn-info btn-sm"><< Back</a>
   </div>
 </div>

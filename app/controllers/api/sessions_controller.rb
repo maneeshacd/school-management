@@ -1,7 +1,14 @@
 class Api::SessionsController < Devise::SessionsController
   skip_before_action :verify_signed_out_user
   respond_to :json
-  # POST /api/login
+
+  # @url [POST] /api/login.json
+  #
+  # @option email [String] Email of user.
+  #
+  # @option password [Integer] :page The page number.
+  #
+  # @return [User] User details with token.
   def create
     unless request.format == :json
       sign_out
@@ -25,6 +32,17 @@ class Api::SessionsController < Devise::SessionsController
                      }
     end
   end
+
+
+  # @url [DELETE] /api/logout.json
+
+  # @return Logged out message
+
+  def destroy
+    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
+    render :json => { message: 'Logged out' }
+  end
+
 private
   def current_token
     request.env['warden-jwt_auth.token']

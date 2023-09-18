@@ -9,7 +9,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # POST /resource
   def create
     build_resource(sign_up_params.merge(role: :student))
     resource.save
@@ -57,11 +56,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   protected
 
-  # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
     devise_parameter_sanitizer.permit(
       :sign_up,
-      keys: [:name, :email, :description, :password, :password_confirmation, :school_id])
+      keys: [:name, :email, :phone_number, :description, :password, :password_confirmation, :school_id])
   end
 
   # If you have extra params to permit, append them to the sanitizer.

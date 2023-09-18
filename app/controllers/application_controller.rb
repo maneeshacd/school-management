@@ -24,6 +24,7 @@ class ApplicationController < ActionController::Base
     super and return unless args.blank?
     json_request? ? authenticate_api_user! : super
   end
+
   def invalid_auth_token
     respond_to do |format|
       format.html { redirect_to sign_in_path,

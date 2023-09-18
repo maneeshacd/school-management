@@ -8,9 +8,6 @@ class User < ApplicationRecord
   has_many :student_enrollments, class_name: 'Enrollment', foreign_key: :student_id
   has_many :student_batches, through: :student_enrollments, source: :batch
   has_many :enrolled_courses, through: :student_batches, source: :course
-  has_many :classmates, -> (user) {
-    where(enrollments: { status: 1 }).where.not(id: user).distinct
-  }, through: :student_batches, source: :students
 
   enum :role, %w[school_admin student admin]
 
@@ -31,5 +28,11 @@ class User < ApplicationRecord
       'remember_created_at', 'reset_password_sent_at',
       'reset_password_token', 'updated_at'
     ]
+  end
+
+  def classmates(batch)
+    User.includes(:student_enrollments)
+      .where(student_enrollments: { status: 1, batch: batch })
+      .where.not(id: id)
   end
 end

@@ -8,6 +8,8 @@
           <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" alt="Profile Picture" class="img-thumbnail">
       </div>
       <div class='col-md-8'>
+        <p class="card-text">email: <%= @user.email %></p>
+        <p class="card-text">phone_number: <%= @user.phone_number.presence || 'None' %></p>
         <p class="card-text">Description: <%= @user.description.presence || 'None' %></p>
       </div>
     </div>

@@ -24,7 +24,7 @@
     <td><%= link_to "Edit", edit_course_path(@course), class: 'btn btn-success btn-sm' %></td>
   <% end %>
   <% if policy(@course).destroy? %>
-    <td><%= button_to "Destroy", @course, method: :delete, class: 'btn btn-danger btn-sm inline' %></td>
+    <td><%= button_to "Destroy", @course, method: :delete, class: 'btn btn-danger btn-sm inline', form: { data: { turbo_confirm: "Are you sure?" } } %></td>
   <% end %>
   <td><%= link_to "<< Back", courses_path, class: 'btn btn-primary btn-sm' %></td>
 </div>
