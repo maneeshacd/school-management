@@ -1,0 +1,30 @@
+<h3>Students</h3>
+<br>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class='w-15' scope="col">Student</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone number</th>
+      <th class='w-50' scope="col">Description</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @students.blank? %>
+      <tr>
+        <td colspan='5'><center>No Data available in table</center></td>
+      </tr>
+    <%else%>
+      <% @students.each do |student| %>
+        <tr>
+          <td><%= student.name%></td>
+          <td class=><%= student.email%></td>
+          <td class=><%= student.phone_number.presence || 'None'%></td>
+          <td class=><%= student.description.presence || 'None'%></td>
+          <td><%= link_to "Show", student_path(student), class: 'btn btn-success btn-sm' %></td>
+        </tr>
+      <% end %>
+    <%end%>
+  </tbody>
+</table>

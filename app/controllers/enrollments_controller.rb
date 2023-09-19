@@ -1,5 +1,5 @@
 class EnrollmentsController < ApplicationController
-  before_action :set_batch, except: %i[student_index pending]
+  before_action :set_batch, except: %i[student_index pending admin_create]
   before_action :set_enrollment, only: %i[ show edit update destroy ]
 
   # @url [GET] /batches/:batch_id/enrollments.json
@@ -32,7 +32,8 @@ class EnrollmentsController < ApplicationController
   # @return [Enrollment] The enrollment resource.
   def create
     authorize Enrollment
-    already_enrolled_to_course? and return
+    already_enrolled_to_course?(current_user) and return
+
     @enrollment = current_user.student_enrollments.build(batch: @batch, school: current_user.school)
 
     respond_to do |format|
@@ -61,7 +62,7 @@ class EnrollmentsController < ApplicationController
 
     respond_to do |format|
       if @enrollment.save
-        format.html { redirect_to batch_enrollments_url(@batch), notice: "Enrollment was successfully updated." }
+        format.html { redirect_back(fallback_location: root_path, notice: 'Enrollment was successfully updated.') }
         format.json { render :show, status: :ok, enrollment: @enrollment }
       else
         format.html { render :index, status: :unprocessable_entity, notice: 'Not updated' }
@@ -88,22 +89,46 @@ class EnrollmentsController < ApplicationController
   end
 
   def pending
-    @pending_enrollments = current_user.school.enrollments.includes(:batch, :student)
+    @pending_enrollments = current_user.school.enrollments.includes(:batch, :student).pending
+  end
+
+  # @url [POST] /enrollments/admin_create.json
+  # @param batch_id [Integer]  The batch ID of the enrollment.
+  # @param student_id [Integer]  The student ID of the enrollment.
+  # @return [Enrollment] The enrollment resource.
+  def admin_create
+    authorize Enrollment
+    @student = User.find(params[:student_id])
+    @batch = Batch.find(params[:enrollment][:batch_id])
+    already_enrolled_to_course?(@student) and return
+
+    @enrollment =
+      @student.student_enrollments.build(batch: @batch, school: current_user.school, status: :approved)
+
+    respond_to do |format|
+      if @enrollment.save
+        format.html { redirect_to student_path(@student), notice: "Enrollment was successfully created." }
+        format.json { render :show, status: :created, enrollment: @enrollment }
+      else
+        format.html {
+          redirect_to student_path(@student),
+          alert: @enrollment.errors.full_messages.to_sentence
+        }
+        format.json { render json: @enrollment.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   private
 
-    def already_enrolled_to_course?
-      if current_user.enrolled_courses.include?(@batch.course)
+    def already_enrolled_to_course?(user)
+      if user.enrolled_courses.include?(@batch.course)
         respond_to do |format|
           format.html {
-            redirect_to(
-              course_batch_path(@batch.course, @batch),
-              alert: 'You already enrolled to another batch of this same course'
-            )
+            redirect_back(fallback_location: root_path, alert: 'User already enrolled to another batch of this same course')
           }
           format.json {
-            render json: 'You already enrolled to another batch of this same course',
+            render json: 'User already enrolled to another batch of this same course',
             status: :unprocessable_entity
           }
         end and return true

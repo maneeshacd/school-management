@@ -1,1 +1,1 @@
-json.array! @classmates, partial: "classmate", as: :user
+json.array! @classmates, partial: "user", as: :user

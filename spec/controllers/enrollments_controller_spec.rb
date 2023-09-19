@@ -6,6 +6,7 @@ RSpec.describe EnrollmentsController, type: :controller do
   let!(:school) { create(:school) }
   let!(:school_admin) { create(:user, role: :school_admin, school: school) }
   let!(:student) { create(:user, role: :student) }
+  let!(:student1) { create(:user, role: :student) }
   let!(:course) { create(:course, school: school) }
   let!(:batch) { create(:batch, course: course) }
   let!(:enrollment) { create(:enrollment, batch: batch, school: school, student: student) }
@@ -80,7 +81,7 @@ RSpec.describe EnrollmentsController, type: :controller do
       it "renders error message" do
         sign_in(student)
         post :create, params: { batch_id: batch.id }
-        expect(flash[:alert]).to eq("You already enrolled to another batch of this same course")
+        expect(flash[:alert]).to eq("User already enrolled to another batch of this same course")
       end
     end
   end
@@ -99,7 +100,7 @@ RSpec.describe EnrollmentsController, type: :controller do
 
     it "redirects to batch_enrollments_url on success" do
       patch :update, params: { batch_id: batch.id, id: enrollment.id, status: :approved }
-      expect(response).to redirect_to(batch_enrollments_url(batch))
+      expect(response).to redirect_to(root_path)
     end
 
     it "sets a flash notice after updating" do
@@ -150,6 +151,40 @@ RSpec.describe EnrollmentsController, type: :controller do
     it "renders the pending template" do
       get :pending
       expect(response).to render_template("pending")
+    end
+  end
+
+  describe 'POST #admin_create' do
+
+    before do
+      sign_in(school_admin)
+    end
+
+    it 'finds the student and batch' do
+      post :admin_create, params: { student_id: student.id, enrollment: { batch_id: batch.id } }
+      expect(assigns(:student)).to eq(student)
+      expect(assigns(:batch)).to eq(batch)
+    end
+
+    context 'when the student is not already enrolled' do
+      it 'creates an enrollment' do
+        expect {
+          post :admin_create, params: { student_id: student1.id, enrollment: { batch_id: batch.id } }
+        }.to change(Enrollment, :count).by(1)
+      end
+    end
+
+    context 'when the student is already enrolled' do
+      it 'does not create an enrollment' do
+        expect {
+          post :admin_create, params: { student_id: student.id, enrollment: { batch_id: batch.id } }
+        }.not_to change(Enrollment, :count)
+      end
+
+      it 'renders an error message ' do
+        post :admin_create, params: { student_id: student.id, enrollment: { batch_id: batch.id } }
+        expect(flash[:alert]).to eq('User already enrolled to another batch of this same course')
+      end
     end
   end
 end

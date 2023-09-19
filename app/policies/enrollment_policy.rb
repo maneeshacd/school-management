@@ -26,4 +26,8 @@ class EnrollmentPolicy < ApplicationPolicy
   def pending?
     user.school_admin?
   end
+
+  def admin_create?
+    user.school_admin?
+  end
 end

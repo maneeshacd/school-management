@@ -1,0 +1,51 @@
+<p style="color: green"><%= notice %></p>
+
+<div style="color: red">
+  <ul>
+    <% @student.errors.each do |error| %>
+      <li><%= error.full_message %></li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <h3>Student details - <%= @student.name%></h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+              <p><strong>Student:</strong> <%= @student.name %></p>
+              <p><strong>Email:</strong> <%= @student.email %></p>
+              <p><strong>Phone number:</strong> <%= @student.phone_number.presence || 'None' %></p>
+              <p><strong>Student details:</strong> <%= @student.description.presence || 'None' %></p>
+              <p><strong>Approved enrollments:</strong>
+                <% @student.student_enrollments.approved.each do |en|%>
+                  <%= link_to en.batch.name, course_batch_path(en.batch.course, en.batch) %>
+                <%end%>
+              </p>
+              <p>
+                <strong>Add student to batch:</strong>
+                <%= form_for(Enrollment.new, url: admin_create_path(student_id: @student)) do |f| %>
+                  <%= select_tag "Courses", options_from_collection_for_select(Course.order(:name), "id", "name", params[:course_id]), { prompt: 'Select a course' }%>
+                  <%= f.collection_select :batch_id, @batches, :id, :name, {prompt: 'Select a Batch'}, { class: "#{@batches.blank? ? 'disable' : ''}", required: true }  %>
+                  <%= f.submit "Submit", class: 'btn btn-primary btn-sm' %>
+                <% end %>
+              </p>
+          </div>
+        </div>
+        </p>
+    </div>
+  </div>
+  <br>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#Courses").on('change', function(){
+      debugger
+      window.location.href = window.location.href.split('?')[0] + "?course_id=" + $(this).val()
+    });
+  });
+</script>
