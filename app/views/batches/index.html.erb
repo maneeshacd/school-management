@@ -13,15 +13,21 @@
     </tr>
   </thead>
   <tbody>
-    <% @batches.each do |batch| %>
+    <% if @batches.blank? %>
       <tr>
-        <td><%= batch.name%></td>
-        <td class=><%= batch.description%></td>
-        <td class=><%= batch.start_date.strftime("#{batch.start_date.day.ordinalize} %b %Y")%> - <%= batch.end_date.strftime("#{batch.end_date.day.ordinalize} %b %Y")%></td>
-        <td>
-          <%= link_to "Show", course_batch_path(@course, batch), class: 'btn btn-success btn-sm' %>
-        </td>
+        <td colspan='4'><center>No Data available in table</center></td>
       </tr>
+    <%else%>
+      <% @batches.each do |batch| %>
+        <tr>
+          <td><%= batch.name%></td>
+          <td class=><%= batch.description%></td>
+          <td class=><%= batch.start_date.strftime("#{batch.start_date.day.ordinalize} %b %Y")%> - <%= batch.end_date.strftime("#{batch.end_date.day.ordinalize} %b %Y")%></td>
+          <td>
+            <%= link_to "Show", course_batch_path(@course, batch), class: 'btn btn-success btn-sm' %>
+          </td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

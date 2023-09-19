@@ -1,0 +1,23 @@
+<% if enrollments.blank? %>
+  <tr>
+    <td colspan='5'><center>No Data available in table</center></td>
+  </tr>
+<%else%>
+  <% enrollments.each do |en| %>
+    <tr>
+      <td><%= en.batch.name%></td>
+      <td><%= en.student.name%></td>
+      <td class=><%= en.batch.start_date.strftime("#{en.batch.start_date.day.ordinalize} %b %Y")%> - <%= en.batch.end_date.strftime("#{en.batch.end_date.day.ordinalize} %b %Y")%></td>
+      <td class=><%= en.status%></td>
+      <td class='w-25'>
+        <%= link_to "Show", batch_enrollment_path(en.batch, en), class: 'btn btn-success btn-sm' %>
+        <%if en.rejected? || en.pending?%>
+          <%= button_to "Approve", batch_enrollment_path(en.batch, en, status: :approved), method: :patch, class: 'btn btn-success btn-sm' %>
+        <%end%>
+        <% if en.approved? || en.pending? %>
+          <%= button_to "Reject", batch_enrollment_path(en.batch, en, status: :rejected), method: :patch, class: 'btn btn-danger btn-sm' %>
+        <%end%>
+      </td>
+    </tr>
+  <% end %>
+<%end%>

@@ -6,7 +6,8 @@ class StudentsController < ApplicationController
   #
   # @return [Array<Item>] An array of students, who are the current batch classmates of current student.
   def classmates
-    @batch = Batch.find(params[:id])
-    @classmates = current_user.classmates(@batch)
+    authorize :student
+    @batch_id = params[:id]
+    @classmates = current_user.classmates(@batch_id)
   end
 end

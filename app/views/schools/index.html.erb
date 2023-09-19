@@ -10,15 +10,21 @@
     </tr>
   </thead>
   <tbody>
-    <% @schools.each do |school| %>
+    <% if @schools.blank? %>
       <tr>
-        <td><%= school.name%></td>
-        <td class=><%= school.description%></td>
-        <td>
-          <%= link_to "Show", school_path(school), class: 'btn btn-success btn-sm' %>
-          <%= link_to "School Admins", school_school_admins_path(school), class: 'btn btn-warning btn-sm' %>
-        </td>
+        <td colspan='3'><center>No Data available in table</center></td>
       </tr>
+    <%else%>
+      <% @schools.each do |school| %>
+        <tr>
+          <td><%= school.name%></td>
+          <td class=><%= school.description%></td>
+          <td>
+            <%= link_to "Show", school_path(school), class: 'btn btn-success btn-sm' %>
+            <%= link_to "School Admins", school_school_admins_path(school), class: 'btn btn-warning btn-sm' %>
+          </td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

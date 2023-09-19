@@ -1,5 +1,5 @@
 <p style="color: green"><%= alert %></p>
-<h3><%= @batch.name %></h3>
+<h3>Pending Enrollments</h3>
 <br>
 <table class="table table-striped">
   <thead>
@@ -12,6 +12,6 @@
     </tr>
   </thead>
   <tbody>
-    <%= render 'enrollments', enrollments: @enrollments %>
+    <%= render 'enrollments', enrollments: @pending_enrollments %>
   </tbody>
 </table>

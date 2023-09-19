@@ -1,9 +1,5 @@
 class HomeController < ApplicationController
   def show
-    if current_user.admin?
-      redirect_to schools_path
-    else
-      redirect_to home_path
-    end
+    redirect_to current_user.admin? ? schools_path : home_path
   end
 end

@@ -20,7 +20,7 @@ class BatchesController < ApplicationController
   # @param course_id [Integer] Course ID of the btach.
   # @return [Batch] The course resource.
   def show
-    @already_enrolled = current_user.student_batches.include?(@batch)
+    @already_enrolled = current_user.student_batches.include?(@batch) if current_user.student?
   end
 
   def new
@@ -82,11 +82,15 @@ class BatchesController < ApplicationController
   # @return No content
   def destroy
     authorize @batch
-    @batch.destroy
 
     respond_to do |format|
-      format.html { redirect_to course_batches_url(@course), notice: "Batch was successfully destroyed." }
-      format.json { head :no_content }
+      if @batch.destroy
+        format.html { redirect_to course_batches_url(@course), notice: "Batch was successfully destroyed." }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to course_batch_url(@course, @batch), notice: "not deleted." }
+        format.json { render json: @batch.errors, status: :unprocessable_entity }
+      end
     end
   end
 

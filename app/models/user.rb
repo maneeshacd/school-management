@@ -11,6 +11,7 @@ class User < ApplicationRecord
 
   enum :role, %w[school_admin student admin]
 
+  validates :name, :email, :role, presence: true
   validate :user_school, on: :create
   before_create :add_jti
 
@@ -19,20 +20,12 @@ class User < ApplicationRecord
   end
 
   def user_school
-    errors.add(:kind, "School id cannot be blank") if student? && school_id.nil?
+    errors.add(:base, "School id cannot be blank") if (student? || school_admin?) && school_id.nil?
   end
 
-  def self.ransackable_attributes(auth_object = nil)
-    [
-      'created_at', 'name', 'email', 'description', 'encrypted_password', 'id',
-      'remember_created_at', 'reset_password_sent_at',
-      'reset_password_token', 'updated_at'
-    ]
-  end
-
-  def classmates(batch)
+  def classmates(batch_id)
     User.includes(:student_enrollments)
-      .where(student_enrollments: { status: 1, batch: batch })
+      .where(student_enrollments: { batch_id: batch_id })
       .where.not(id: id)
   end
 end

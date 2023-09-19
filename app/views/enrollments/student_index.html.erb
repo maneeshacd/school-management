@@ -1,4 +1,5 @@
 <p style="color: green"><%= alert %></p>
+<h3>Enrollments </h3>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -10,16 +11,22 @@
     </tr>
   </thead>
   <tbody>
-    <% @enrollments.each do |en| %>
+    <% if @enrollments.blank? %>
       <tr>
-        <td><%= en.batch.name%></td>
-        <td><%= link_to en.batch.course.name, course_path(en.batch.course) %></td>
-        <td class=><%= en.batch.start_date.strftime("#{en.batch.start_date.day.ordinalize} %b %Y")%> - <%= en.batch.end_date.strftime("#{en.batch.end_date.day.ordinalize} %b %Y")%></td>
-        <td class=><%= en.status%></td>
-        <td class='w-25'>
-          <%= link_to "Show", batch_enrollment_path(en.batch, en), class: 'btn btn-success btn-sm' %>
-        </td>
+        <td colspan='5'><center>No Data available in table</center></td>
       </tr>
+    <%else%>
+      <% @enrollments.each do |en| %>
+        <tr>
+          <td><%= en.batch.name%></td>
+          <td><%= link_to en.batch.course.name, course_path(en.batch.course) %></td>
+          <td class=><%= en.batch.start_date.strftime("#{en.batch.start_date.day.ordinalize} %b %Y")%> - <%= en.batch.end_date.strftime("#{en.batch.end_date.day.ordinalize} %b %Y")%></td>
+          <td class=><%= en.status%></td>
+          <td class='w-25'>
+            <%= link_to "Show", batch_enrollment_path(en.batch, en), class: 'btn btn-success btn-sm' %>
+          </td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

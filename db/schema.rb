@@ -38,6 +38,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_17_144703) do
   create_table "enrollments", force: :cascade do |t|
     t.bigint "student_id", null: false
     t.bigint "batch_id", null: false
+    t.bigint "school_id", null: false
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

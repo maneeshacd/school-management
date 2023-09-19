@@ -30,7 +30,7 @@
   </div>
   <br>
   <td class='w-25'>
-    <%= link_to "Go to batch", course_batch_path(@batch, @batch.course), class: 'btn btn-success btn-sm' %>
+    <%= link_to "Go to batch", course_batch_path(@batch.course, @batch), class: 'btn btn-success btn-sm' %>
     <% if policy(@enrollment).update? %>
       <%if @enrollment.rejected? || @enrollment.pending?%>
         <%= button_to "Approve", batch_enrollment_path(@batch, @enrollment), method: :patch, class: 'btn btn-success btn-sm' %>
@@ -40,7 +40,9 @@
       <%end%>
     <%end%>
   </td>
-  <td><%= link_to "Classmates", batch_classmates_path(@batch), class: 'btn btn-info btn-sm inline' %></td>
+  <% if policy(:student).classmates? %>
+    <td><%= link_to "Classmates", batch_classmates_path(@batch), class: 'btn btn-info btn-sm inline' %></td>
+  <%end%>
   <% if policy(@enrollment).destroy? %>
     <td><%= button_to "Delete", batch_enrollment_path(@batch, @enrollment), method: :delete, class: 'btn btn-danger btn-sm inline', form: { data: { turbo_confirm: "Are you sure?" } } %></td>
   <%end%>

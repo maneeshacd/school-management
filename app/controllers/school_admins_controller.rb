@@ -11,7 +11,7 @@ class SchoolAdminsController < ApplicationController
   #
   # @return [Array<Item>] An array of school admins.
   def index
-    @school_admins = @school.admins.paginate(page: params[:page], per_page: params[:per_page])
+    @school_admins = @school.school_admins.paginate(page: params[:page], per_page: params[:per_page])
   end
 
   def new
@@ -45,7 +45,7 @@ class SchoolAdminsController < ApplicationController
   # @param description [Text] (Required) Description of the school.
   # @return [SchoolAdmin] The school admin resource.
   def create
-    @school_admin = @school.admins.build(school_admin_params)
+    @school_admin = @school.school_admins.build(school_admin_params)
 
     respond_to do |format|
       if @school_admin.save

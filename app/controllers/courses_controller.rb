@@ -75,19 +75,23 @@ class CoursesController < ApplicationController
   # @return No content
   def destroy
     authorize @course
-    @course.destroy
 
     respond_to do |format|
-      format.html { redirect_to courses_url, notice: "Course was successfully destroyed." }
-      format.json { head :no_content }
+      if @course.destroy
+        format.html { redirect_to courses_url, notice: "Course was successfully destroyed." }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to course_url(@course), notice: "not deleted." }
+        format.json { render json: @course.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   private
 
-    def set_course
-      @course = Course.find(params[:id])
-    end
+  def set_course
+    @course = Course.find(params[:id])
+  end
 
   def course_params
     params.require(:course).permit(:name, :description, :years)

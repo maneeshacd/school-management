@@ -1,5 +1,5 @@
 class EnrollmentsController < ApplicationController
-  before_action :set_batch, except: :student_index
+  before_action :set_batch, except: %i[student_index pending]
   before_action :set_enrollment, only: %i[ show edit update destroy ]
 
   # @url [GET] /batches/:batch_id/enrollments.json
@@ -33,7 +33,7 @@ class EnrollmentsController < ApplicationController
   def create
     authorize Enrollment
     already_enrolled_to_course? and return
-    @enrollment = current_user.student_enrollments.build(batch: @batch)
+    @enrollment = current_user.student_enrollments.build(batch: @batch, school: current_user.school)
 
     respond_to do |format|
       if @enrollment.save
@@ -58,6 +58,7 @@ class EnrollmentsController < ApplicationController
   def update
     authorize @enrollment
     @enrollment.status = params[:status]
+
     respond_to do |format|
       if @enrollment.save
         format.html { redirect_to batch_enrollments_url(@batch), notice: "Enrollment was successfully updated." }
@@ -84,6 +85,10 @@ class EnrollmentsController < ApplicationController
         format.json { render json: @enrollment.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def pending
+    @pending_enrollments = current_user.school.enrollments.includes(:batch, :student)
   end
 
   private

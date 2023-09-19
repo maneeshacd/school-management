@@ -22,4 +22,8 @@ class EnrollmentPolicy < ApplicationPolicy
   def update?
     user.admin? || user.school_admin?
   end
+
+  def pending?
+    user.school_admin?
+  end
 end

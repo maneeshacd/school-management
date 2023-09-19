@@ -31,6 +31,7 @@ Rails.application.routes.draw do
 
   get '/batches/:id/classmates', to: 'students#classmates', as: :batch_classmates
   get 'enrollments', to: 'enrollments#student_index'
+  get '/enrollments/pending', to: 'enrollments#pending', as: :pending_enrollments
   get 'profile', to: 'profile#show'
   get 'edit_profile', to: 'profile#edit'
   patch 'update_profile', to: 'profile#update'

@@ -1,16 +1,30 @@
+<h3>Classmates</h3>
+<br>
 <table class="table table-striped">
   <thead>
     <tr>
       <th class='w-15' scope="col">Student</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone number</th>
       <th class='w-50' scope="col">Description</th>
+      <th scope="col">Status</th>
     </tr>
   </thead>
   <tbody>
-    <% @classmates.each do |classmate| %>
+    <% if @classmates.blank? %>
       <tr>
-        <td><%= classmate.name%></td>
-        <td class=><%= classmate.description%></td>
+        <td colspan='4'><center>No Data available in table</center></td>
       </tr>
-    <% end %>
+    <%else%>
+      <% @classmates.each do |classmate| %>
+        <tr>
+          <td><%= classmate.name%></td>
+          <td class=><%= classmate.email%></td>
+          <td class=><%= classmate.phone_number.presence || 'None'%></td>
+          <td class=><%= classmate.description.presence || 'None'%></td>
+          <td class=><%= classmate.student_enrollments.find_by(batch_id: @batch_id).status%></td>
+        </tr>
+      <% end %>
+    <%end%>
   </tbody>
 </table>

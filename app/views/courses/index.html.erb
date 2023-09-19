@@ -13,19 +13,25 @@
     </tr>
   </thead>
   <tbody>
-    <% @courses.each do |course| %>
+    <% if @courses.blank? %>
       <tr>
-        <td><%= course.name%></td>
-        <td class=><%= course.description%></td>
-        <td class=><%= course.years%></td>
-        <td>
-          <%= link_to "Show", course_path(course), class: 'btn btn-success btn-sm' %>
-          <%= link_to "Batches", course_batches_path(course), class: 'btn btn-warning btn-sm' %>
-          <%  if current_user.enrolled_courses.include?(course) %>
-            <%= link_to "Enrolled", '#', class: 'btn', style: "color: green" %>
-          <%end%>
-        </td>
+        <td colspan='4'><center>No Data available in table</center></td>
       </tr>
-    <% end %>
+    <%else%>
+      <% @courses.each do |course| %>
+        <tr>
+          <td><%= course.name%></td>
+          <td class=><%= course.description%></td>
+          <td class=><%= course.years%></td>
+          <td>
+            <%= link_to "Show", course_path(course), class: 'btn btn-success btn-sm' %>
+            <%= link_to "Batches", course_batches_path(course), class: 'btn btn-warning btn-sm' %>
+            <%  if current_user.enrolled_courses.include?(course) %>
+              <%= link_to "Enrolled", '#', class: 'btn', style: "color: green" %>
+            <%end%>
+          </td>
+        </tr>
+      <% end %>
+    <%end%>
   </tbody>
 </table>
