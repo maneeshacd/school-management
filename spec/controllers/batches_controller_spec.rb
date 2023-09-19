@@ -25,20 +25,20 @@ RSpec.describe BatchesController, type: :controller do
   end
 
   describe "GET #show" do
-    let(:student) { create(:user, role: :student, school: school) }
-    let(:course) { create(:course, school: school) }
-    let(:batch) { create(:batch, course: course) }
-    let(:enrollment) { create(:enrollment, batch: batch, student: student, school: school) }
+    let!(:student) { create(:user, role: :student, school: school) }
+    let!(:course) { create(:course, school: school) }
+    let!(:batch) { create(:batch, course: course) }
+    let!(:enrollment) { create(:enrollment, batch: batch, student: student, school: school, status: :approved) }
 
     it "assigns @batch" do
       get :show, params: { course_id: course.id, id: batch.id }
       expect(assigns(:batch)).to eq(batch)
     end
 
-    it "assigns @already_enrolled" do
+    it "assigns @enrolled" do
       sign_in(student)
       get :show, params: { course_id: course.id, id: batch.id }
-      expect(assigns(:already_enrolled)).to eq(student.student_batches.include?(batch))
+      expect(assigns(:enrolled)).to eq(student.student_batches.include?(batch))
     end
 
     it "renders the show template" do

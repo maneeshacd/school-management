@@ -5,10 +5,15 @@
       <%= @batch.name %>
       <% if policy(Enrollment).new? %>
         <td>
-          <%= @already_enrolled ?
-            button_to("Enrolled", '/#', class: 'btn btn-sm float-end')
-            :
-            button_to("Enroll", batch_enrollments_path(@batch), method: :post, class: 'btn btn-success btn-sm float-end' )%>
+          <% if @enrolled %>
+            <%= button_to("Enrolled", '/#', class: 'btn btn-sm float-end') %>
+          <% elsif @rejected%>
+            <%= button_to("Enrollment Rejected", '/#', class: 'btn btn-sm float-end') %>
+          <% elsif @pending%>
+            <%= button_to("Enrollment Pending", '/#', class: 'btn btn-sm float-end') %>
+          <%else%>
+            <%= button_to("Enrol", batch_enrollments_path(@batch), method: :post, class: 'btn btn-success btn-sm float-end' ) %>
+          <%end%>
         </td>
       <%end%>
       <% if policy(Enrollment).index? %>

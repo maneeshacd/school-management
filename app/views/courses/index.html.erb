@@ -26,8 +26,14 @@
           <td>
             <%= link_to "Show", course_path(course), class: 'btn btn-success btn-sm' %>
             <%= link_to "Batches", course_batches_path(course), class: 'btn btn-warning btn-sm' %>
-            <%  if current_user.enrolled_courses.include?(course) %>
+            <%  if current_user.enrollment_approved_courses.include?(course) %>
               <%= link_to "Enrolled", '#', class: 'btn', style: "color: green" %>
+            <%end%>
+            <%  if current_user.enrollment_rejected_courses.include?(course) %>
+              <%= link_to "Enrollment Rejected", '#', class: 'btn', style: "color: green" %>
+            <%end%>
+            <%  if current_user.enrollment_pending_courses.include?(course) %>
+              <%= link_to "Enrollment Pending", '#', class: 'btn', style: "color: green" %>
             <%end%>
           </td>
         </tr>

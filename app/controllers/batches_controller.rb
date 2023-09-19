@@ -20,7 +20,20 @@ class BatchesController < ApplicationController
   # @param course_id [Integer] Course ID of the btach.
   # @return [Batch] The course resource.
   def show
-    @already_enrolled = current_user.student_batches.include?(@batch) if current_user.student?
+    if current_user.student?
+      @enrolled =
+        current_user.student_batches
+                    .includes(:enrollments)
+                    .where(enrollments: { status: :approved }).include?(@batch)
+      @rejected =
+        current_user.student_batches
+                    .includes(:enrollments)
+                    .where(enrollments: { status: :rejected }).include?(@batch)
+      @pending =
+        current_user.student_batches
+                    .includes(:enrollments)
+                    .where(enrollments: { status: :pending }).include?(@batch)
+    end
   end
 
   def new

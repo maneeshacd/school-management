@@ -8,6 +8,9 @@ class User < ApplicationRecord
   has_many :student_enrollments, class_name: 'Enrollment', foreign_key: :student_id
   has_many :student_batches, through: :student_enrollments, source: :batch
   has_many :enrolled_courses, through: :student_batches, source: :course
+  has_many :enrollment_approved_courses, -> { where({ batches: { enrollments: { status: :approved } } }) }, through: :student_batches, source: :course
+  has_many :enrollment_rejected_courses, -> { where({ batches: { enrollments: { status: :rejected } } }) }, through: :student_batches, source: :course
+  has_many :enrollment_pending_courses, -> { where({ batches: { enrollments: { status: :pending } } }) }, through: :student_batches, source: :course
 
   enum :role, %w[school_admin student admin]
 

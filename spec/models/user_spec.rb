@@ -6,6 +6,9 @@ RSpec.describe User, type: :model do
     it { should have_many(:student_batches).through(:student_enrollments).source(:batch) }
     it { should have_many(:enrolled_courses).through(:student_batches).source(:course) }
     it { should belong_to(:school).optional }
+    it { should have_many(:enrollment_approved_courses).through(:student_batches).source(:course).conditions(batches: { enrollments: { status: :approved } })}
+    it { should have_many(:enrollment_rejected_courses).through(:student_batches).source(:course).conditions(batches: { enrollments: { status: :rejected } })}
+    it { should have_many(:enrollment_pending_courses).through(:student_batches).source(:course).conditions(batches: { enrollments: { status: :pending } })}
   end
 
   describe 'Validations' do
