@@ -10,6 +10,7 @@
 - Login with the seeded admin creds
   - ``` email : admin@example.com ```
   - ``` password : password ```
+- School admin can login with the creds created by Admin
 - For student registration go to [http://localhost:3000/users/sign_up](http://localhost:3000/users/sign_up)
 
 ### Feature
